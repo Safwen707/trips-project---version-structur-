@@ -1,16 +1,17 @@
-const controller=require('../controller/user.controller')
+const UserController=require('../controller/user.controller')
 
 const express = require('express');
 const router = express.Router();
 const Booking = require('../models/booking');
 const cloudinary = require('cloudinary').v2;
 const upload = require('../config/multer-config');
-// Cloudinary configuration
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-  }); 
+ const cloud_config =require('../config/cloud-config');
+cloud_config()
+// cloudinary.config({
+//     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+//     api_key: process.env.CLOUDINARY_API_KEY,
+//     api_secret: process.env.CLOUDINARY_API_SECRET,
+//   });
  
 
 
@@ -19,35 +20,11 @@ cloudinary.config({
 
 
   
-router.post('/register',upload.single('image'),controller.addUser );
+router.post('/register',upload.single('image'),UserController.addUser );
+router.get('/getUser/:id',UserController.getUser)
+router.get('/getUser',UserController.getUser)
 
-
-
-
-
-
-
-
-
-router.get('/getUsersBooking',async(req,res)=>{
-    try{
-        const query=`SELECT * 
-        FROM users  ,bookings   
-        WHERE id_user = user_id`
-         
-        const rows = await sequelize.query(query, {
-                          
-                          type: sequelize.QueryTypes.SELECT
-        });
-        console.log("🚀 ~ router.get ~ rows:", rows)
-        res.json(rows)
-
-
-    }catch(err){
-        console.log("🚀 ~ router.get ~ err:", err)
-        
-    }
-})
+router.get('/getUserBooking',UserController.getUserBooking)
 
 
 
