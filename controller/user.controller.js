@@ -1,12 +1,10 @@
 
-
-
 const UserService=require('../service/user.service')
 
 class UserController{
   addUser = async (req,res) => {
     try{
-      console.log("🚀 ~ UserController ~ addUser= ~ req:", req.body)
+     
       const user= await UserService.addUser(req)
       if ("message" in user) {
         res.status(409).json(user);
@@ -43,7 +41,5 @@ class UserController{
 
 
 }
-
-
 
 module.exports = new UserController(); 

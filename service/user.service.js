@@ -1,7 +1,4 @@
 const repository = require('../repository/user.repository')
-
-
-
 const sequelize = require('../config/db')
 const bcrypt = require('bcrypt');
 const User = require('../models/user')
@@ -17,7 +14,7 @@ class UserService {
                    const url =await repository.generateUrl(req)
                    const {name,email,password}= userData
                    const salt=bcrypt.genSaltSync(10);
-                   const cryptedPass = await bcrypt.hashSync(password,salt)  ;
+                   const cryptedPass =  await bcrypt.hashSync(password,salt)  ;
                    const user = await User.create({ name, email,password:cryptedPass ,image:url});
                    repository.deleteDir()// to delete the directory created when the generation of url
             
@@ -62,7 +59,6 @@ class UserService {
             }
         }
     }
-
 
     async getUserBooking(){
         
